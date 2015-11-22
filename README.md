@@ -77,7 +77,7 @@ This mod is tested on Akliz Game Servers. Sign up now at [akliz.com/scottkillen]
 
 The logo is a colorized version of ['Bull icon'][bull-icon] by [Lorc][lorc-site] under [CC BY 3.0][ccby30].
 
-[beech-icon]: http://game-icons.net/lorc/originals/bull.html
+[bull-icon]: http://game-icons.net/lorc/originals/bull.html
 [lorc-site]: http://lorcblog.blogspot.com/
 [ccby30]: http://creativecommons.org/licenses/by/3.0/
 
