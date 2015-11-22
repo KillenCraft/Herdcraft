@@ -1,0 +1,6 @@
+rootProject.version = "$version_mc-$version_major.$version_series.$version_revision"
+rootProject.ext.version_mc = version_mc
+rootProject.ext.version_forge = version_forge
+rootProject.ext.version_kore = "$version_mc-$version_kore"
+
+apply from: "https://raw.githubusercontent.com/ScottKillen/Snippets/master/gradle/version.gradle"
