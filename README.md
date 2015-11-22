@@ -3,7 +3,7 @@
 releases][releases])<br />
 *DEPENDS ON*: [Kore Sample 1.3.2 (or later) for MC 1.7.10][koresample]
 
-[latest]: http://scottk.us/HerdCraft
+[latest]: http://scottk.us/Herd_Craft
 [releases]: https://github.com/MinecraftModArchive/HerdCraft/releases
 [changelog.md]: https://github.com/MinecraftModArchive/HercCraft/blob/develop/src/main/resources/CHANGELOG.md
 [koresample]: http://scottk.us/KoreSampleMod
