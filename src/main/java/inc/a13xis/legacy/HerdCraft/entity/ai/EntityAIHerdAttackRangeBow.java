@@ -1,37 +1,19 @@
-package com.HerdCraft.entity.ai;
+package inc.a13xis.legacy.HerdCraft.entity.ai;
+
+import com.google.common.base.Predicate;
+import inc.a13xis.legacy.HerdCraft.common.Herd;
+import inc.a13xis.legacy.HerdCraft.common.HerdCraft;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
-import scala.util.Random;
-
-import com.HerdCraft.common.Herd;
-import com.HerdCraft.common.HerdCraft;
-
-import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
-
-public class EntityAIHerdArrowAttack extends EntityAIBase
+public class EntityAIHerdAttackRangeBow extends EntityAIBase
 {
-	public final IEntitySelector entityFilter = new IEntitySelector()
-    {
-        private static final String __OBFID = "CL_00001575";
-        /**
-         * Return whether the specified entity is applicable to this filter.
-         */
-        public boolean isEntityApplicable(Entity target)
-        {
-            return entityHost.getClass().isAssignableFrom(target.getClass()) && target.isEntityAlive() && entityHost.getEntitySenses().canSee(target);
-        }
-    };
-	
+
     /** The entity the AI instance has been applied to */
     private final EntityLiving entityHost;
     /**
@@ -62,12 +44,24 @@ public class EntityAIHerdArrowAttack extends EntityAIBase
 	private int timeSinceBlockedCheck;
 	private boolean wasBlocked;
 
-    public EntityAIHerdArrowAttack(IRangedAttackMob host, double moveSpeed, int rangedAttackTime, float attackRange, int cautionAngle, boolean clockwise, boolean interuptableByRange)
+    public final Predicate entityFilter = new Predicate<Entity>()
+    {
+        private static final String __OBFID = "CL_00001575";
+        /**
+         * Return whether the specified entity is applicable to this filter.
+         */
+        public boolean apply(Entity target)
+        {
+            return target.isEntityAlive() && EntityAIHerdAttackRangeBow.this.entityHost.getEntitySenses().canSee(target) && entityHost != target;
+        }
+    };
+
+    public EntityAIHerdAttackRangeBow(IRangedAttackMob host, double moveSpeed, int rangedAttackTime, float attackRange, int cautionAngle, boolean clockwise, boolean interuptableByRange)
     {
         this(host, moveSpeed, rangedAttackTime, rangedAttackTime, attackRange, cautionAngle, clockwise, interuptableByRange);
     }
 
-    public EntityAIHerdArrowAttack(IRangedAttackMob host, double moveSpeed, int minRangedAttackTime, int maxRangedAttackTime, float attackRange, int cautionAngle, boolean clockwise, boolean interuptableByRange)
+    public EntityAIHerdAttackRangeBow(IRangedAttackMob host, double moveSpeed, int minRangedAttackTime, int maxRangedAttackTime, float attackRange, int cautionAngle, boolean clockwise, boolean interuptableByRange)
     {
         this.rangedAttackTime = -1;
 
@@ -144,7 +138,7 @@ public class EntityAIHerdArrowAttack extends EntityAIBase
     		resetTask();
     		return; 
     	}
-        double d0 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.boundingBox.minY, this.attackTarget.posZ);
+        double d0 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.getEntityBoundingBox().minY, this.attackTarget.posZ);
         boolean canSeeTarget = this.entityHost.getEntitySenses().canSee(this.attackTarget);
 
         if (canSeeTarget)
@@ -215,10 +209,10 @@ public class EntityAIHerdArrowAttack extends EntityAIBase
     }
 
 	private void circleTarget() {
-		Vec3 entityPos = Vec3.createVectorHelper(entityHost.posX, entityHost.posY, entityHost.posZ);
-		Vec3 targetPos = Vec3.createVectorHelper(attackTarget.posX, attackTarget.posY, attackTarget.posZ);
-		Vec3 centerPos = targetPos.subtract(entityPos);
-		centerPos.rotateAroundY(clockwise?cautionAngle:-cautionAngle);
+		Vec3d entityPos = new Vec3d(entityHost.getPosition().getX(), entityHost.getPosition().getY(), entityHost.getPosition().getZ());
+		Vec3d targetPos = new Vec3d(attackTarget.getPosition().getX(), attackTarget.getPosition().getY(), attackTarget.getPosition().getZ());
+		Vec3d centerPos = targetPos.subtract(entityPos);
+		centerPos.rotateYaw(clockwise?cautionAngle:-cautionAngle);
 		targetPos = centerPos.addVector(targetPos.xCoord, targetPos.yCoord, targetPos.zCoord);
 		entityPos = RandomPositionGenerator.findRandomTargetBlockTowards((EntityCreature) entityHost, 4, 4, targetPos);
 		if(entityPos != null)
@@ -234,15 +228,15 @@ public class EntityAIHerdArrowAttack extends EntityAIBase
 			return wasBlocked;
 		}
 		timeSinceBlockedCheck = 5;
-		List<EntityLivingBase> list = this.entityHost.worldObj.selectEntitiesWithinAABB(this.entityHost.getClass(), this.entityHost.boundingBox.expand(distToTarget, 3.0D, distToTarget), this.entityFilter);
+		List<EntityLivingBase> list = this.entityHost.worldObj.getEntitiesWithinAABB(this.entityHost.getClass(), this.entityHost.getEntityBoundingBox().expand(distToTarget, 3.0D, distToTarget), this.entityFilter);
 		list.remove(entityHost);
 		list.remove(attackTarget);
 		if(list.size() == 0) return false;
-		Vec3 directionToTarget = Vec3.createVectorHelper(entityHost.posX, 0, entityHost.posZ).subtract(Vec3.createVectorHelper(attackTarget.posX, 0, attackTarget.posZ));
+		Vec3d directionToTarget = new Vec3d(entityHost.posX, 0, entityHost.posZ).subtract(new Vec3d(attackTarget.posX, 0, attackTarget.posZ));
 		double angleToTarget = Math.toDegrees(Math.atan2(directionToTarget.xCoord, directionToTarget.zCoord));
 		for(EntityLivingBase other:list)
 		{
-			Vec3 directionToOther = Vec3.createVectorHelper(entityHost.posX, 0, entityHost.posZ).subtract(Vec3.createVectorHelper(other.posX, 0, other.posZ));
+			Vec3d directionToOther = new Vec3d(entityHost.posX, 0, entityHost.posZ).subtract(new Vec3d(other.posX, 0, other.posZ));
 			double angleToOther = Math.toDegrees(Math.atan2(directionToOther.xCoord, directionToOther.zCoord));
 			if (Math.abs(angleToOther - angleToTarget) < cautionAngle) 
 			{

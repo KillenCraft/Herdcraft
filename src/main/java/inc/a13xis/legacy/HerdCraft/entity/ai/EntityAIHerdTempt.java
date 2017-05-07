@@ -1,5 +1,7 @@
-package com.HerdCraft.entity.ai;
+package inc.a13xis.legacy.HerdCraft.entity.ai;
 
+import inc.a13xis.legacy.HerdCraft.common.Herd;
+import inc.a13xis.legacy.HerdCraft.common.HerdCraft;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -7,9 +9,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import com.HerdCraft.common.Herd;
-import com.HerdCraft.common.HerdCraft;
+import net.minecraft.util.EnumHand;
 
 public class EntityAIHerdTempt extends EntityAIBase {
 	private Class effectiveClass;
@@ -64,11 +64,6 @@ public class EntityAIHerdTempt extends EntityAIBase {
         this.setMutexBits(3);
     }
 
-
-	/**
-     * Returns whether the EntityAIBase should begin execution.
-     * @param minBreed 
-     */
     public boolean shouldExecute()
     {
         if (this.delayTemptCounter > 0)
@@ -92,7 +87,7 @@ public class EntityAIHerdTempt extends EntityAIBase {
             		EntityLivingBase seer = ourHerd.getForwardTempterSeer(temptedEntity);
             		if (seer != null)
             		{
-            			ItemStack heldStack = ourHerd.getTempter().getCurrentEquippedItem();
+            			ItemStack heldStack = ourHerd.getTempter().getHeldItem(EnumHand.MAIN_HAND);
             			if (heldStack != null && heldStack.getItem() == breedingFood)
             			{
             				seerEntity = temptedEntity.getNavigator().getPathToEntityLiving(seer) == null?null:seer;
@@ -105,7 +100,7 @@ public class EntityAIHerdTempt extends EntityAIBase {
             else
             {
             	seerEntity = null;
-            	ItemStack var1 = this.temptingPlayer.getCurrentEquippedItem();
+            	ItemStack var1 = this.temptingPlayer.getHeldItem(EnumHand.MAIN_HAND);
             	if (var1 != null && var1.getItem() == this.breedingFood)
             	{
             		ourHerd.setTempter(temptingPlayer);	//We found a nearby player.
@@ -163,8 +158,8 @@ public class EntityAIHerdTempt extends EntityAIBase {
 	        this.lastKnownPosY = this.temptingPlayer.posY;
 	        this.lastKnownPosZ = this.temptingPlayer.posZ;
         }
-        this.temptedAvoidsWater = this.temptedEntity.getNavigator().getAvoidsWater();
-        this.temptedEntity.getNavigator().setAvoidsWater(false);
+        this.temptedAvoidsWater = this.temptedEntity.getNavigator().getNodeProcessor().getCanSwim();
+        this.temptedEntity.getNavigator().getNodeProcessor().setCanSwim(false);
     }
 
     /**
@@ -175,7 +170,7 @@ public class EntityAIHerdTempt extends EntityAIBase {
         this.temptingPlayer = null;
         this.temptedEntity.getNavigator().clearPathEntity();
         this.delayTemptCounter = 100;
-        this.temptedEntity.getNavigator().setAvoidsWater(this.temptedAvoidsWater);
+        this.temptedEntity.getNavigator().getNodeProcessor().setCanSwim(this.temptedAvoidsWater);
     }
 
     /**

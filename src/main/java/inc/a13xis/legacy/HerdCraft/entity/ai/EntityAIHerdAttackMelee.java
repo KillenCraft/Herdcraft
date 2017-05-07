@@ -1,15 +1,16 @@
-package com.HerdCraft.entity.ai;
+package inc.a13xis.legacy.HerdCraft.entity.ai;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-import com.HerdCraft.common.Herd;
-import com.HerdCraft.common.HerdCraft;
+import inc.a13xis.legacy.HerdCraft.common.Herd;
+import inc.a13xis.legacy.HerdCraft.common.HerdCraft;
 
-public class EntityAIHerdAttackOnCollide extends EntityAIBase
+public class EntityAIHerdAttackMelee extends EntityAIBase
 {
     World worldObj;
     EntityLiving attacker;
@@ -24,18 +25,18 @@ public class EntityAIHerdAttackOnCollide extends EntityAIBase
     boolean seesThroughWalls;
 
     /** The PathEntity of our entity. */
-    PathEntity entityPathEntity;
+    Path entityPathEntity;
     Class classTarget;
     private int navThrottler;
 
-    public EntityAIHerdAttackOnCollide(EntityLiving par1EntityLiving, Class par2Class, double moveSpeed,
-    		boolean seesThroughWalls, Class effective)
+    public EntityAIHerdAttackMelee(EntityLiving par1EntityLiving, Class par2Class, double moveSpeed,
+                                   boolean seesThroughWalls, Class effective)
     {
         this(par1EntityLiving, moveSpeed, seesThroughWalls, effective);
         this.classTarget = par2Class;
     }
 
-    public EntityAIHerdAttackOnCollide(EntityLiving attacker, double moveSpeed, boolean seesThroughWalls, Class effective)
+    public EntityAIHerdAttackMelee(EntityLiving attacker, double moveSpeed, boolean seesThroughWalls, Class effective)
     {
     	if (effective != null)	//optional class to treat this as.
         {
@@ -151,15 +152,15 @@ public class EntityAIHerdAttackOnCollide extends EntityAIBase
         this.attackTick = Math.max(this.attackTick - 1, 0);
         double var1 = (double)(this.attacker.width * 2.0F * this.attacker.width * 2.0F);
 
-        if (this.attacker.getDistanceSq(this.entityTarget.posX, this.entityTarget.boundingBox.minY, this.entityTarget.posZ) <= var1)
+        if (this.attacker.getDistanceSq(this.entityTarget.posX, this.entityTarget.getEntityBoundingBox().minY, this.entityTarget.posZ) <= var1)
         {
             if (this.attackTick <= 0)
             {
                 this.attackTick = 20;
 
-                if (this.attacker.getHeldItem() != null)
+                if (this.attacker.getHeldItem(EnumHand.MAIN_HAND) != null)
                 {
-                    this.attacker.swingItem();
+                    this.attacker.swingArm(EnumHand.MAIN_HAND);
                 }
 
                 this.attacker.attackEntityAsMob(this.entityTarget);

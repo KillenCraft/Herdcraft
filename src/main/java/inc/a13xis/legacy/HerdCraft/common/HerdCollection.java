@@ -1,18 +1,18 @@
-package com.HerdCraft.common;
+package inc.a13xis.legacy.HerdCraft.common;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 
 public class HerdCollection
 {
-    private final List herdList = new ArrayList();
+    private final List<Herd> herdList = new ArrayList<Herd>();
     
     private int tickCounter = 0;
     private boolean magnet;
@@ -30,7 +30,8 @@ public class HerdCollection
 	@SubscribeEvent
     public void tick(TickEvent tock)
     {
-		if(!tock.side.isServer())return;
+		if(!tock.side.isServer())
+		    return;
         ++this.tickCounter;
         Iterator i = this.herdList.iterator();
 
@@ -93,7 +94,7 @@ public class HerdCollection
         while (herd_iter.hasNext())
         {
             Herd curr = (Herd)herd_iter.next();
-            float currDistSqrd = curr.getCenter().getDistanceSquared(posX, posY, posZ);
+            float currDistSqrd = (float)(curr.getCenter().getDistance(posX, posY, posZ)*curr.getCenter().getDistance(posX, posY, posZ));
             if(curr.getWorldObj() == world && curr.getType() == type)	//if wrong type or world, move along.
             {
 	            if (currDistSqrd < nearestDistSqrd)
@@ -124,7 +125,7 @@ public class HerdCollection
         while (herd_iter.hasNext())
         {
             Herd curr = (Herd)herd_iter.next();
-            float currDistSqrd = curr.getCenter().getDistanceSquared(center.getCenter().posX, center.getCenter().posY, center.getCenter().posZ);
+            double currDistSqrd = Math.pow(curr.getCenter().getDistance(center.getCenter().getX(), center.getCenter().getY(), center.getCenter().getZ()),2);
 
             if (currDistSqrd < nearestDistSqrd)
             {
@@ -133,7 +134,7 @@ public class HerdCollection
                 if (currDistSqrd <= (float)(searchRadius * searchRadius) && curr.getType() == center.getType() && curr != center)
                 {
                     nearest = curr;
-                    nearestDistSqrd = currDistSqrd;
+                    nearestDistSqrd = (float)currDistSqrd;
                 }
             }
         }
@@ -153,7 +154,6 @@ public class HerdCollection
     		nearest.updateHerdRadiusAndCenter();
     		herdList.add(nearest);
     	}
-    	
     	return nearest;
     }
 }

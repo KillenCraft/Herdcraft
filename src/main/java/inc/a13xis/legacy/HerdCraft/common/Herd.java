@@ -1,4 +1,4 @@
-package com.HerdCraft.common;
+package inc.a13xis.legacy.HerdCraft.common;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,9 +8,10 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 public class Herd
@@ -24,14 +25,13 @@ public class Herd
      * This is the sum of all member coordinates and used to calculate the actual herd center by dividing by the number
      * of members.
      */
-    private final ChunkCoordinates centerHelper = new ChunkCoordinates(0, 0, 0);
+    private BlockPos centerHelper = new BlockPos(0, 0, 0);
 
     /** This is the actual herd center. */
-    private final ChunkCoordinates center = new ChunkCoordinates(0, 0, 0);
-    public Vec3 fleeIn = Vec3.createVectorHelper(0.0d, 0.0d, 0.0d);
+    private BlockPos center = new BlockPos(0, 0, 0);
+    public Vec3d fleeIn = new Vec3d(0.0, 0.0, 0.0);
     private Class myClass;
     private int herdRadius = 0;
-    private int tickCounter = 0;
     private int minBreed = 0;
     private int maxBreed = 0;
     private int timeSinceBreed = 0;
@@ -59,12 +59,10 @@ public class Herd
     {
     	if(worldObj != null && !worldObj.isRemote)
     	{
-	    	this.tickCounter = tick;
 	    	timeSinceBreed++;
 	
 	        if (tick % 20 == 0)
 	        {
-	        	//this.updateHerdRadiusAndCenter(); Must do members first to maintain herds after load.
 	        	this.updateMembers();
 	            updateHerdRadiusAndCenter();
 	            checkBreed();
@@ -92,8 +90,8 @@ public class Herd
         				}
         				else
         				{
-        					member.func_146082_f(null);//Animal is fed by null
-        					first.func_146082_f(null);//Animal is fed by null
+        					member.setInLove(null);//Animal is fed by null
+        					first.setInLove(null);//Animal is fed by null
         					timeSinceBreed = 0;
         					break;	//only 1 pair at once.
         				}
@@ -110,29 +108,42 @@ public class Herd
 	public void updateMembers()
     {
     	//finds all "myClass" in radius.
-        herdMembers = this.worldObj.getEntitiesWithinAABB(myClass, AxisAlignedBB.getBoundingBox((double)(center.posX - herdRadius), (double)(center.posY - 6), (double)(center.posZ - herdRadius), (double)(center.posX + herdRadius), (double)(this.center.posY + 6), (double)(center.posZ + herdRadius)));
-        centerHelper.posX = centerHelper.posY = centerHelper.posZ = 0;
+        herdMembers = this.worldObj.getEntitiesWithinAABB(myClass, new AxisAlignedBB((double)(center.getX() - herdRadius), (double)(center.getY() - 6), (double)(center.getZ() - herdRadius), (double)(center.getX() + herdRadius), (double)(this.center.getY() + 6), (double)(center.getZ() + herdRadius)));
+        Vec3i vector = new Vec3i(centerHelper.getX(),centerHelper.getY(),centerHelper.getZ());
+		centerHelper = centerHelper.subtract(vector);
         Iterator i = herdMembers.iterator();
         EntityLivingBase curr = null;
         for (; i.hasNext(); curr = (EntityLivingBase)i.next()){
         	if (curr != null){
-	        	centerHelper.posX += curr.posX;
-	        	centerHelper.posY += curr.posY;
-	        	centerHelper.posZ += curr.posZ;
+        		int currx,curry,currz;
+        		currx = curr.posX < 0? (int)Math.floor(curr.posX) : (int)Math.ceil(curr.posX);
+				curry = curr.posY< 0? (int)Math.floor(curr.posY) : (int)Math.ceil(curr.posY);
+				currz = curr.posZ < 0? (int)Math.floor(curr.posZ) : (int)Math.ceil(curr.posZ);
+				centerHelper = centerHelper.east(currx);
+				centerHelper = centerHelper.up(curry);
+				centerHelper = centerHelper.south(currz);
         	}
         }
         if (curr != null){
-        	centerHelper.posX += curr.posX;
-        	centerHelper.posY += curr.posY;
-        	centerHelper.posZ += curr.posZ;
+			int currx,curry,currz;
+			currx = curr.posX < 0? (int)Math.floor(curr.posX) : (int)Math.ceil(curr.posX);
+			curry = curr.posY< 0? (int)Math.floor(curr.posY) : (int)Math.ceil(curr.posY);
+			currz = curr.posZ < 0? (int)Math.floor(curr.posZ) : (int)Math.ceil(curr.posZ);
+			centerHelper = centerHelper.east(currx);
+			centerHelper = centerHelper.up(curry);
+			centerHelper = centerHelper.south(currz);
     	}
     }
     
     protected void addMember(EntityLivingBase curr){
     	herdMembers.add(curr);
-    	centerHelper.posX += curr.posX;
-    	centerHelper.posY += curr.posY;
-    	centerHelper.posZ += curr.posZ;
+		int currx,curry,currz;
+		currx = curr.posX < 0? (int)Math.floor(curr.posX) : (int)Math.ceil(curr.posX);
+		curry = curr.posY< 0? (int)Math.floor(curr.posY) : (int)Math.ceil(curr.posY);
+		currz = curr.posZ < 0? (int)Math.floor(curr.posZ) : (int)Math.ceil(curr.posZ);
+		centerHelper = centerHelper.east(currx);
+		centerHelper = centerHelper.up(curry);
+		centerHelper = centerHelper.south(currz);
     	updateHerdRadiusAndCenter();
     }
 
@@ -152,7 +163,7 @@ public class Herd
     	herdRadius = 0;
     }
     
-    public ChunkCoordinates getCenter()
+    public BlockPos getCenter()
     {
         return this.center;
     }
@@ -175,16 +186,11 @@ public class Herd
 	public void setEnemy(EntityLivingBase enemy2) {
 		if (myClass.isInstance(enemy2)) return; //Our herd cannot hate itself.
 		this.enemy = enemy2;
+		fleeIn.subtract(fleeIn.xCoord,0,fleeIn.zCoord);
 		if (enemy != null)
 		{
-			fleeIn.xCoord = center.posX - enemy.posX;
-			fleeIn.zCoord = center.posZ - enemy.posZ;
+			fleeIn.addVector(center.getX() - enemy.posX,0, center.getZ() - enemy.posZ);
 			fleeIn = fleeIn.normalize();
-		}
-		else
-		{
-			fleeIn.xCoord = 0;
-			fleeIn.zCoord = 0;
 		}
 	}
 	
@@ -272,7 +278,7 @@ public class Herd
      */
     public boolean isInRange(int par1, int par2, int par3)
     {
-        return this.center.getDistanceSquared(par1, par2, par3) < (float)(this.herdRadius * this.herdRadius);
+        return this.center.getDistance(par1, par2, par3) * this.center.getDistance(par1, par2, par3) < (float)(this.herdRadius * this.herdRadius);
     }
 
     /**
@@ -295,20 +301,19 @@ public class Herd
     protected void updateHerdRadiusAndCenter()
     {
         int size = this.herdMembers.size();
-
+		center = center.subtract(new Vec3i(center.getX(),center.getY(),center.getZ()));
         if (size == 0)
         {
-            this.center.set(0, 0, 0);
-            this.centerHelper.set(0, 0, 0);
+			centerHelper = centerHelper.subtract(new Vec3i(centerHelper.getX(),centerHelper.getY(),centerHelper.getZ()));
             this.herdRadius = 0;
         }
         else
         {
-            this.center.set(this.centerHelper.posX / size, this.centerHelper.posY / size, this.centerHelper.posZ / size);
+			center = center.add(this.centerHelper.getX() / size, this.centerHelper.getY() / size, this.centerHelper.getZ() / size);
             int radius = 0;
             EntityLivingBase curr;
 
-            for (Iterator i = this.herdMembers.iterator(); i.hasNext(); radius = (int) Math.max(curr.getDistanceSq(this.center.posX, this.center.posY, this.center.posZ), radius))
+            for (Iterator i = this.herdMembers.iterator(); i.hasNext(); radius = (int) Math.max(curr.getDistanceSq(this.center.getX(), this.center.getY(), this.center.getZ()), radius))
             {
                 curr = (EntityLivingBase)i.next();
             }
@@ -317,17 +322,18 @@ public class Herd
         }
     }
 
-    public void shuntCenter(ChunkCoordinates otherCenter, int otherSize)
+    public void shuntCenter(BlockPos otherCenter, int otherSize)
     {
     	int mySize = herdMembers.size();
     	if (otherSize > mySize)
     	{
-    		Vec3 direction = Vec3.createVectorHelper(center.posX - otherCenter.posX, center.posY - otherCenter.posY, center.posZ - otherCenter.posZ);
+    		Vec3d direction = new Vec3d(center.getX() - otherCenter.getX(), center.getY() - otherCenter.getY(), center.getZ() - otherCenter.getZ());
     		direction.normalize();
     		int xShunt = (int) (Math.max(8.0D, (double)otherSize / (double)mySize) * direction.xCoord);
     		int yShunt = (int) (Math.max(8.0D, (double)otherSize / (double)mySize) * direction.yCoord); 
-    		int zShunt = (int) (Math.max(8.0D, (double)otherSize / (double)mySize) * direction.zCoord); 
-    		center.set(center.posX + xShunt, center.posY + yShunt, center.posZ + zShunt);
+    		int zShunt = (int) (Math.max(8.0D, (double)otherSize / (double)mySize) * direction.zCoord);
+			center = center.add(center.getX() + xShunt, center.getY() + yShunt, center.getZ() + zShunt);
+			center = center.subtract(new Vec3i(center.getX(),center.getY(),center.getZ()));
     	}
     }
     

@@ -1,13 +1,12 @@
-package com.HerdCraft.entity.ai;
+package inc.a13xis.legacy.HerdCraft.entity.ai;
 
+import inc.a13xis.legacy.HerdCraft.common.Herd;
+import inc.a13xis.legacy.HerdCraft.common.HerdCraft;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3;
-
-import com.HerdCraft.common.Herd;
-import com.HerdCraft.common.HerdCraft;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAIHerdRegroup extends EntityAIBase
 {
@@ -49,16 +48,16 @@ public class EntityAIHerdRegroup extends EntityAIBase
             return false;
         }
         Herd nearHerd = HerdCraft.herdCollectionObj.handleNearestHerdOrMakeNew(entity, entityEffectiveClass, minBreed, maxBreed, baseBreed, varBreed);
-        ChunkCoordinates center = nearHerd.getCenter();
+        BlockPos center = nearHerd.getCenter();
         
-        if (center.getDistanceSquared((int)entity.posX, (int)entity.posY, (int)entity.posZ) < (nearHerd.getHerdRadius() / 3) * (nearHerd.getHerdRadius() / 3)){
+        if (Math.pow(center.getDistance((int)entity.posX, (int)entity.posY, (int)entity.posZ),2) < (nearHerd.getHerdRadius() / 3) * (nearHerd.getHerdRadius() / 3)){
         	return false;
         }
         if (this.entity.getRNG().nextInt(20) != 0){
         	return false;
         }
         
-        Vec3 var1 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 10, 4, Vec3.createVectorHelper(center.posX, center.posY, center.posZ));
+        Vec3d var1 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 10, 4, new Vec3d(center.getX(), center.getY(), center.getZ()));
         if (var1 == null)
         {
         	return false;
