@@ -1,15 +1,16 @@
 [
 {
-  "modid": "herdCraft",
+  "modid": "herdcraft",
   "name": "HerdCraft",
   "description": "Formerly MCHerds. Adds herding behaviors. Also, zombie hordes.",
-  "version": "${mod_version}",
-  "mcversion": "${minecraft_version}",
+  "version": "L1.0",
+  "mcversion": "[1.9,1.11.2]",
   "url": "",
   "updateUrl": "",
   "authorList": [
+    "Nakranoth",
     "ScottKillen",
-    "Nakranoth"
+    "A13XIS"
   ],
   "credits": "",
   "logoFile": "assets/logo.png",
@@ -17,12 +18,10 @@
   ],
   "parent":"",
   "requiredMods": [
-    "Forge",
-    "koresample@[${kore_version},${minecraft_version}-2.0.0)"
+    "Forge"
   ],
   "dependencies": [
-    "Forge",
-    "koresample@[${kore_version},${minecraft_version}-2.0.0)",
+    "Forge"
   ],
   "dependants": [
   ],

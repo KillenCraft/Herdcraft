@@ -1,13 +1,12 @@
-package com.HerdCraft.entity.ai;
+package inc.a13xis.legacy.HerdCraft.entity.ai;
 
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
-import com.HerdCraft.common.Herd;
-import com.HerdCraft.common.HerdCraft;
+import inc.a13xis.legacy.HerdCraft.common.Herd;
+import inc.a13xis.legacy.HerdCraft.common.HerdCraft;
 
 public class EntityAIHerdPanic extends EntityAIBase
 {
@@ -54,7 +53,7 @@ public class EntityAIHerdPanic extends EntityAIBase
             return false;
         }
         
-        Vec3 pathTo = RandomPositionGenerator.findRandomTarget(this.entity, 5, 4);
+        Vec3d pathTo = RandomPositionGenerator.findRandomTarget(this.entity, 5, 4);
         if (pathTo == null)
         {
             return false;

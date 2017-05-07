@@ -1,16 +1,18 @@
-package com.HerdCraft.entity.ai;
+package inc.a13xis.legacy.HerdCraft.entity.ai;
 
 import java.util.List;
-import net.minecraft.command.IEntitySelector;
+
+import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 /**********
  * This class is nearly identical to the base class EntityAIAvoidEntity.
@@ -21,17 +23,7 @@ import net.minecraft.util.Vec3;
 
 public class EntityAIShyFrom extends EntityAIBase
 {
-    public final IEntitySelector entityFilter = new IEntitySelector()
-    {
-        private static final String __OBFID = "CL_00001575";
-        /**
-         * Return whether the specified entity is applicable to this filter.
-         */
-        public boolean isEntityApplicable(Entity target)
-        {
-            return target.isEntityAlive() && EntityAIShyFrom.this.theEntity.getEntitySenses().canSee(target) && theEntity != target;
-        }
-    };
+
     /** The entity we are attached to */
     private EntityCreature theEntity;
     private double farSpeed;
@@ -39,12 +31,23 @@ public class EntityAIShyFrom extends EntityAIBase
     private Entity closestLivingEntity;
     private float distanceFromEntity;
     /** The PathEntity of our entity */
-    private PathEntity entityPathEntity;
+    private Path entityPathEntity;
     /** The PathNavigate of our entity */
     private PathNavigate entityPathNavigate;
     /** The class of the entity we should avoid */
     private Class targetEntityClass;
     private int fleeRange;
+    public final Predicate entityFilter = new Predicate<Entity>()
+    {
+        private static final String __OBFID = "CL_00001575";
+        /**
+         * Return whether the specified entity is applicable to this filter.
+         */
+        public boolean apply(Entity target)
+        {
+            return target.isEntityAlive() && EntityAIShyFrom.this.theEntity.getEntitySenses().canSee(target) && theEntity != target;
+        }
+    };
     private static final String __OBFID = "CL_00001574";
 
     public EntityAIShyFrom(EntityCreature theEntity, Class targetEntityClass, float distanceFromEntity, double farSpeed, double nearSpeed, int fleeRange)
@@ -80,7 +83,7 @@ public class EntityAIShyFrom extends EntityAIBase
         }
         else
         {
-            List list = this.theEntity.worldObj.selectEntitiesWithinAABB(this.targetEntityClass, this.theEntity.boundingBox.expand((double)this.distanceFromEntity, 3.0D, (double)this.distanceFromEntity), this.entityFilter);
+            List list = this.theEntity.worldObj.getEntitiesWithinAABB(this.targetEntityClass, this.theEntity.getEntityBoundingBox().expand((double)this.distanceFromEntity, 3.0D, (double)this.distanceFromEntity), this.entityFilter);
 
             if (list.isEmpty())
             {
@@ -90,7 +93,7 @@ public class EntityAIShyFrom extends EntityAIBase
             this.closestLivingEntity = (Entity)list.get(0);
         }
 
-        Vec3 vec3 = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.theEntity, fleeRange, 7, Vec3.createVectorHelper(this.closestLivingEntity.posX, this.closestLivingEntity.posY, this.closestLivingEntity.posZ));
+        Vec3d vec3 = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.theEntity, fleeRange, 7, new Vec3d(this.closestLivingEntity.posX, this.closestLivingEntity.posY, this.closestLivingEntity.posZ));
 
         if (vec3 == null)
         {

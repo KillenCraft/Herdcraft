@@ -1,13 +1,11 @@
-package com.HerdCraft.entity.ai;
+package inc.a13xis.legacy.HerdCraft.entity.ai;
 
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.Vec3;
-
-import com.HerdCraft.common.Herd;
-import com.HerdCraft.common.HerdCraft;
+import inc.a13xis.legacy.HerdCraft.common.Herd;
+import inc.a13xis.legacy.HerdCraft.common.HerdCraft;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityAIHerdStampede extends EntityAIBase
 {
@@ -52,7 +50,7 @@ public class EntityAIHerdStampede extends EntityAIBase
             return false;
         }
         
-        Vec3 var1 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 15, 4, Vec3.createVectorHelper(entity.posX + myHerd.fleeIn.xCoord * 30.0d, entity.posY, entity.posZ + myHerd.fleeIn.zCoord * 30.0d));
+        Vec3d var1 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 15, 4, new Vec3d(entity.posX + myHerd.fleeIn.xCoord * 30.0d, entity.posY, entity.posZ + myHerd.fleeIn.zCoord * 30.0d));
         if (var1 == null)
         {
         	return false;

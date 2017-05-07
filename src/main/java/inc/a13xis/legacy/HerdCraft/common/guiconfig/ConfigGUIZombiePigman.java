@@ -1,9 +1,9 @@
-package com.HerdCraft.common.guiconfig;
+package inc.a13xis.legacy.HerdCraft.common.guiconfig;
 
 import net.minecraft.client.gui.GuiScreen;
-import cpw.mods.fml.client.config.GuiConfig;
-import cpw.mods.fml.client.config.GuiConfigEntries;
-import cpw.mods.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.client.config.GuiConfig;
+import net.minecraftforge.fml.client.config.GuiConfigEntries;
+import net.minecraftforge.fml.client.config.IConfigElement;
 
 public class ConfigGUIZombiePigman extends ConfigGUIGeneric {
 		

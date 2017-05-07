@@ -1,21 +1,13 @@
-package com.HerdCraft.common.guiconfig;
+package inc.a13xis.legacy.HerdCraft.common.guiconfig;
+
+import inc.a13xis.legacy.HerdCraft.common.HerdCraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
+import net.minecraftforge.fml.client.config.GuiConfig;
+import net.minecraftforge.fml.client.config.IConfigElement;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.HerdCraft.common.HerdCraft;
-
-import cpw.mods.fml.client.config.DummyConfigElement;
-import cpw.mods.fml.client.config.GuiConfig;
-import cpw.mods.fml.client.config.GuiConfigEntries;
-import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
-import cpw.mods.fml.client.config.GuiConfigEntries.CategoryEntry;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.client.gui.ForgeGuiFactory.ForgeConfigGui.GeneralEntry;
-import net.minecraftforge.common.ForgeModContainer;
-import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.common.config.Configuration;
 
 public class HerdGuiScreen extends GuiConfig {
 	public HerdGuiScreen(GuiScreen parent) {
