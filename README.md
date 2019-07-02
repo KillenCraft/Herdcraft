@@ -7,7 +7,7 @@ releases][releases])<br />
 
 [latest]: https://www.curseforge.com/minecraft/mc-mods/nakranoths-herdcraft
 [releases]: https://github.com/scottkillen-minecraft-mods/Herdcraft/releases
-[changelog.md]: https://github.com/scottkillen-minecraft-mods/Herdcraft/blob/develop/src/main/resources/CHANGELOG.md
+[changelog.md]: https://github.com/scottkillen-minecraft-mods/Herdcraft/blob/master/src/main/resources/CHANGELOG.md
 [koresample]: https://www.curseforge.com/minecraft/mc-mods/kore-sample
 
 This is a continuation of Nakranoth's HerdCraft modification for Minecraft.
