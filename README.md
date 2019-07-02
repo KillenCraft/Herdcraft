@@ -1,14 +1,14 @@
-## HerdCraft
-**LATEST OFFICIAL VERSION**: [HerCraft 1.1.1 for MC 1.7.10][latest] ([changelog][changelog.md]) ([all
+<img src="https://raw.githubusercontent.com/MinecraftModArchive/HerdCraft/develop/art/logo/logo-128.png" align="right" />
+
+# HerdCraft
+**LATEST OFFICIAL VERSION**: [HerdCraft 1.1.1 for MC 1.7.10][latest] ([changelog][changelog.md]) ([all
 releases][releases])<br />
 *DEPENDS ON*: [Kore Sample 1.3.2 (or later) for MC 1.7.10][koresample]
 
-[latest]: http://scottk.us/Herd_Craft
-[releases]: https://github.com/MinecraftModArchive/HerdCraft/releases
-[changelog.md]: https://github.com/MinecraftModArchive/HercCraft/blob/develop/src/main/resources/CHANGELOG.md
-[koresample]: http://scottk.us/KoreSampleMod
-
-![Ancient Trees](https://raw.githubusercontent.com/MinecraftModArchive/HerdCraft/develop/art/logo/logo-128.png)
+[latest]: https://www.curseforge.com/minecraft/mc-mods/nakranoths-herdcraft
+[releases]: https://github.com/scottkillen-minecraft-mods/Herdcraft/releases
+[changelog.md]: https://github.com/scottkillen-minecraft-mods/Herdcraft/blob/develop/src/main/resources/CHANGELOG.md
+[koresample]: https://www.curseforge.com/minecraft/mc-mods/kore-sample
 
 This is a continuation of Nakranoth's HerdCraft modification for Minecraft.
 
@@ -29,15 +29,13 @@ HerdCraft adds no blocks, items or mobs to the game, but makes the game more int
 
 [Mod Packs](#mod-packs)
 
-[Server Hosting](#server-hosting)
-
 [Licensing](#licensing)
 
-### Contributing
+## Contributing
 
 Please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-### Support
+## Support
 Something not quite right?  Have a suggestion?  Found a bug?  Create an issue now!
 
 1. Make sure your issue hasn't already been answered or fixed.  Also think about whether your issue is a valid one
@@ -48,12 +46,12 @@ before submitting it.
 you add/change xxx?" or "Hey, I found an exploit.", etc.).
 5. Click `Submit new issue`, and wait for feedback!
 
-[issues]: /MinecraftModArchive/Herdcraft/issues
-[new]: /MinecraftModArchive/Herdcraft/issues/new
+[issues]: https://github.com/scottkillen-minecraft-mods/Herdcraft/issues
+[new]: https://github.com/scottkillen-minecraft-mods/Herdcraft/issues/new
 
 * * *
 
-#### Mod Packs
+## Mod Packs
 
 This mod is released to the public domain. (*See [below](#licensing).*) The authors have disclaimed all rights and
 anyone can use this software and source code as they wish. This means that anyone has permission to distribute this
@@ -62,18 +60,9 @@ purpose in mind.
 
 * * *
 
-#### Server Hosting
+## Licensing
 
-This mod is tested on Akliz Game Servers. Sign up now at [akliz.com/scottkillen][akliz]. Use the code 'scottkillen' to receive a 20% discount on your first month.
-
-[![Akliz Hosting](https://raw.githubusercontent.com/MinecraftModArchive/assets/master/akliz%20660x90%20singular.png)][akliz]
-[akliz]: http://akliz.com/scottkillen
-
-* * *
-
-#### Licensing
-
-##### Logo
+### Logo
 
 The logo is a colorized version of ['Bull icon'][bull-icon] by [Lorc][lorc-site] under [CC BY 3.0][ccby30].
 
@@ -81,7 +70,7 @@ The logo is a colorized version of ['Bull icon'][bull-icon] by [Lorc][lorc-site]
 [lorc-site]: http://lorcblog.blogspot.com/
 [ccby30]: http://creativecommons.org/licenses/by/3.0/
 
-##### Software
+### Software
 
 Except for the exceptions noted above, this is free and unencumbered software released into the public domain.
 
@@ -100,6 +89,4 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 
 For more information, please refer to [unlicense.org](http://unlicense.org/).
 
-![Public Domain](https://raw.githubusercontent.com/MinecraftModArchive/assets/master/pd-icon.png)
-
-![Analytics](https://ga-beacon.appspot.com/UA-940955-7/Herdcraft/README.md?flat)
+![Public Domain](https://user-images.githubusercontent.com/1509989/60477618-c00cf400-9c4d-11e9-9fd0-58a021d48a4a.png)
